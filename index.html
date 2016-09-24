@@ -1,0 +1,20 @@
+<html>
+<head></head>
+
+<body>
+  <div id="message"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();//':3000');
+	socket.on('conn', function(msg){
+      console.log(msg);
+      //document.getElementById("message").innerHTML = msg;
+    });
+    socket.on('message', function(msg){
+      console.log(msg);
+      document.getElementById("message").innerHTML += msg;
+    });
+  </script>
+</body>
+</html>
