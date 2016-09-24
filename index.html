@@ -6,7 +6,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();//':3000');
+    var socket = io();
 	socket.on('conn', function(msg){
       console.log(msg);
       //document.getElementById("message").innerHTML = msg;
