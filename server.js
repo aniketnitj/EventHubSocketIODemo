@@ -1,13 +1,22 @@
 var app = require('express')();
 var http = require('http').Server(app);
-//var io = require('socket.io')(http);
+var io = require('socket.io').listen(http);
+io.set('origins', '*:*');
 
 var port = process.env.PORT || 3151;
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+  res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  res.header('Access-Control-Expose-Headers', 'Content-Length');
+  res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+  if (req.method === 'OPTIONS') {
+    return res.send(200);
+  } else {
+    return next();
+  }
 });
+
 app.get('/', function(req, res,next){
   //send the index.html file for all requests
   res.sendFile(__dirname + '/index.html');
@@ -19,7 +28,6 @@ http.listen(port, function(){
 
 });
 
-var io = require('socket.io').listen(http);
 
 
 io.on('connection', function(socket) {
